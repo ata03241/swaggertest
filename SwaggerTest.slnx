@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/demo/">
+    <Project Path="demo/DemoApi/DemoApi.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/SwaggerTest.Cli/SwaggerTest.Cli.csproj" />
+    <Project Path="src/SwaggerTest.Core/SwaggerTest.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SwaggerTest.Tests/SwaggerTest.Tests.csproj" />
+  </Folder>
+</Solution>
