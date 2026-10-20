@@ -1,41 +1,40 @@
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+app.MapOpenApi();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+var users = new List<User>
 {
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    new(1, "ada@example.com", "Ada", "$2a$11$demo-not-a-real-hash-one"),
+    new(2, "linus@example.com", "Linus", "$2a$11$demo-not-a-real-hash-two"),
 };
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.MapGet("/health", () => Results.Ok(new HealthStatus("ok")))
+   .Produces<HealthStatus>();
+
+// BUG: returns the full User, including PasswordHash.
+app.MapGet("/users", () => Results.Ok(users))
+   .Produces<List<User>>();
+
+// BUG: same leak on a single user.
+app.MapGet("/users/{id:int}", (int id) =>
+        users.FirstOrDefault(u => u.Id == id) is { } user
+            ? Results.Ok(user)
+            : Results.NotFound())
+   .Produces<User>()
+   .Produces(404);
+
+// BUG: exposes secrets that should never leave the server.
+app.MapGet("/settings/integration", () =>
+        Results.Ok(new IntegrationSettings(
+            "https://payments.example.com",
+            "demo-not-a-real-key",
+            "demo-not-a-real-secret")))
+   .Produces<IntegrationSettings>();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+record User(int Id, string Email, string Name, string PasswordHash);
+record HealthStatus(string Status);
+record IntegrationSettings(string Endpoint, string ApiKey, string ClientSecret);

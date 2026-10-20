@@ -1,0 +1,175 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "DemoApi | v1",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5103/"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "DemoApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "DemoApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "DemoApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/settings/integration": {
+      "get": {
+        "tags": [
+          "DemoApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationSettings"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthStatus": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "IntegrationSettings": {
+        "required": [
+          "endpoint",
+          "apiKey",
+          "clientSecret"
+        ],
+        "type": "object",
+        "properties": {
+          "endpoint": {
+            "type": "string"
+          },
+          "apiKey": {
+            "type": "string"
+          },
+          "clientSecret": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "required": [
+          "id",
+          "email",
+          "name",
+          "passwordHash"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "passwordHash": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "DemoApi"
+    }
+  ]
+}
