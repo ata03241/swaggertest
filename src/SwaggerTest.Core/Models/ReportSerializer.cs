@@ -8,7 +8,8 @@ public static class ReportSerializer
 {
     private static readonly JsonSerializerOptions Options = new(JsonSerializerDefaults.Web)
     {
-        WriteIndented = true,
+         WriteIndented = true,
+         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
     };
 

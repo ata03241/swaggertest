@@ -29,4 +29,15 @@ public class ReportSerializerTests
 
         Assert.False(report.HasHighSeverity);
     }
+
+    [Fact]
+    public void ToJson_does_not_escape_apostrophes()
+    {
+        var report = new ScanReport("api.json",
+            [new Finding("X", Severity.Low, "GET /a", "field 'x'")]);
+
+        var json = ReportSerializer.ToJson(report);
+
+        Assert.Contains("field 'x'", json);
+    }
 }
