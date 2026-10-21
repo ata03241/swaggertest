@@ -1,5 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>swaggertest</ToolCommandName>
+    <PackageId>SwaggerTest.Cli</PackageId>
+    <Version>0.1.0-alpha.1</Version>
+    <Authors>Your Real Name</Authors>
+    <Description>Checks REST APIs built with AI for common problems, such as leaked sensitive fields. JSON output for humans and agents.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/ata03241/swaggertest</RepositoryUrl>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\SwaggerTest.Core\SwaggerTest.Core.csproj" />
   </ItemGroup>
@@ -7,12 +23,5 @@
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.13" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
 
 </Project>
