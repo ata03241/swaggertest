@@ -1,10 +1,15 @@
 using SwaggerTest.Core.Spec;
+using SwaggerTest.Core.Models;
 
 namespace SwaggerTest.Core;
 
 public sealed class ScanRunner(Scanner scanner, TextWriter output, TextWriter error)
 {
-    public async Task<int> RunAsync(string specPath, CancellationToken cancellationToken = default)
+    public async Task<int> RunAsync(
+      string specPath,
+      Severity failOn = Severity.High,
+     CancellationToken cancellationToken = default
+    )
     {
         var load = await SpecLoader.LoadFromFileAsync(specPath, cancellationToken);
 
@@ -18,6 +23,6 @@ public sealed class ScanRunner(Scanner scanner, TextWriter output, TextWriter er
         var report = scanner.Scan(load.Document!, specPath);
         output.WriteLine(ReportSerializer.ToJson(report));
 
-        return report.HasHighSeverity ? ExitCodes.FindingsFound : ExitCodes.Success;
+        return report.HasFindingsAtOrAbove(failOn) ? ExitCodes.FindingsFound : ExitCodes.Success;
     }
 }
