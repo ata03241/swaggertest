@@ -10,7 +10,7 @@
     <ToolCommandName>swaggertest</ToolCommandName>
     <PackageId>SwaggerTest.Cli</PackageId>
     <Version>0.1.0-alpha.1</Version>
-    <Authors>Your Real Name</Authors>
+    <Authors>ata03241</Authors>
     <Description>Checks REST APIs built with AI for common problems, such as leaked sensitive fields. JSON output for humans and agents.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/ata03241/swaggertest</RepositoryUrl>

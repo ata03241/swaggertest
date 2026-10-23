@@ -1,0 +1,11 @@
+{
+  "name": "swaggertest",
+  "owner": { "name": "ata03241" },
+  "plugins": [
+    {
+      "name": "swaggertest",
+      "source": "./",
+      "description": "Checks REST API specs for common problems such as leaked sensitive fields."
+    }
+  ]
+}
