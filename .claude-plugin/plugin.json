@@ -2,7 +2,7 @@
   "name": "swaggertest",
   "description": "Checks REST API specs for common problems such as leaked sensitive fields, and explains how to fix them.",
   "version": "0.1.0-alpha.1",
-  "author": { "name": "Your Real Name" },
+  "author": { "name": "ata0324" },
   "repository": "https://github.com/ata03241/swaggertest",
   "license": "MIT"
 }
