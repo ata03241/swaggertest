@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5103/"
+      "url": "http://localhost:5200/"
     }
   ],
   "paths": {
@@ -100,6 +100,18 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/debug/info": {
+      "get": {
+        "tags": [
+          "DemoApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
