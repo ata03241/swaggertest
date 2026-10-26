@@ -33,6 +33,14 @@ app.MapGet("/settings/integration", () =>
             "demo-not-a-real-secret")))
    .Produces<IntegrationSettings>();
 
+// No .Produces, so the spec doesn't describe this response.
+// It also leaks a secret that SENSITIVE_FIELD cannot see.
+app.MapGet("/debug/info", () => Results.Ok(new
+{
+    Machine = Environment.MachineName,
+    ApiSecret = "demo-not-a-real-secret"
+}));
+
 app.Run();
 
 record User(int Id, string Email, string Name, string PasswordHash);

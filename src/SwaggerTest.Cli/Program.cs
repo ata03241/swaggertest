@@ -1,16 +1,16 @@
 ﻿using System.CommandLine;
 using SwaggerTest.Core;
-using SwaggerTest.Core.Rules;
 using SwaggerTest.Core.Models;
+using SwaggerTest.Core.Rules;
 
 var specArgument = new Argument<FileInfo>("spec")
 {
     Description = "Path to an OpenAPI spec file (JSON)."
 };
 
-var failOnOption  = new Option<Severity>("--fail-on")
+var failOnOption = new Option<Severity>("--fail-on")
 {
-    Description = "Fail if any findings are at or above this severity level.",
+    Description = "Lowest severity that makes the scan fail: info, low, medium or high.",
     DefaultValueFactory = _ => Severity.High
 };
 
@@ -21,7 +21,7 @@ scanCommand.SetAction(async (parseResult, cancellationToken) =>
 {
     var spec = parseResult.GetValue(specArgument)!;
     var failOn = parseResult.GetValue(failOnOption);
-    var scanner = new Scanner([new SensitiveFieldRule()]);
+    var scanner = new Scanner([new SensitiveFieldRule(), new ResponseNoSchemaRule()]);
     var runner = new ScanRunner(scanner, Console.Out, Console.Error);
     return await runner.RunAsync(spec.FullName, failOn, cancellationToken);
 });
