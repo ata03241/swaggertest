@@ -41,6 +41,12 @@ app.MapGet("/debug/info", () => Results.Ok(new
     ApiSecret = "demo-not-a-real-secret"
 }));
 
+
+// BUG: a dictionary of users. A leak check that ignores map values misses this.
+
+app.MapGet("/directory", () => Results.Ok(users.ToDictionary(u => u.Email)))
+   .Produces<Dictionary<string, User>>();
+
 app.Run();
 
 record User(int Id, string Email, string Name, string PasswordHash);
