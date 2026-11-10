@@ -73,7 +73,13 @@ public sealed class SensitiveFieldRule : IRule
             }
         }
 
+        //walks through the items of an array schema, if present, and recursively checks for sensitive fields within those items.
+
         foreach (var hit in Walk(schema.Items, $"{path}[]", depth + 1))
+            yield return hit;
+
+          // Dictionary values: every value in the map shares one schema.
+        foreach (var hit in Walk(schema.AdditionalProperties, $"{path}.*", depth + 1))
             yield return hit;
 
         foreach (var inner in Combined(schema))

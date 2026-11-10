@@ -80,4 +80,48 @@ public class SensitiveFieldRuleTests
 
         Assert.Empty(findings);
     }
+
+    [Fact]
+    public void Flags_sensitive_field_inside_a_dictionary_value()
+    {
+        var findings = Run("""
+        {
+          "openapi": "3.0.1",
+          "info": { "title": "T", "version": "1" },
+          "paths": { "/directory": { "get": { "responses": { "200": {
+            "description": "ok",
+            "content": { "application/json": { "schema": {
+              "type": "object",
+              "additionalProperties": { "$ref": "#/components/schemas/User" } } } } } } } } },
+          "components": { "schemas": { "User": {
+            "type": "object",
+            "properties": {
+              "email": { "type": "string" },
+              "passwordHash": { "type": "string" } } } } }
+        }
+        """);
+
+        var finding = Assert.Single(findings);
+        Assert.Equal("GET /directory", finding.Endpoint);
+        Assert.Contains("passwordHash", finding.Message);
+        Assert.Contains("$.*.passwordHash", finding.Message);
+    }
+
+    [Fact]
+    public void Does_not_flag_a_dictionary_of_plain_strings()
+    {
+        var findings = Run("""
+        {
+          "openapi": "3.0.1",
+          "info": { "title": "T", "version": "1" },
+          "paths": { "/labels": { "get": { "responses": { "200": {
+            "description": "ok",
+            "content": { "application/json": { "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "string" } } } } } } } } }
+        }
+        """);
+
+        Assert.Empty(findings);
+    }
 }
