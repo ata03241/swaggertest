@@ -78,10 +78,10 @@ Names are matched exactly (ignoring case, `_` and `-`). I did that so `nextPageT
 
 The rules and scanning logic live in `SwaggerTest.Core`. The command-line part in `SwaggerTest.Cli` is thin on purpose, so everything important can be tested without starting a process. Tests use xUnit and run in GitHub Actions on every pull request.
 
+##NO_AUTH
+NO_AUTH_DECLARED flags write endpoints (POST, PUT, PATCH, DELETE) with no declared security, plus one note if the spec declares no auth at all. It reads the spec, not your code. If your API enforces auth in code but doesn't declare it in the spec, this rule will flag it.
 
-## What's next
 
-Checking running APIs (localhost only unless you say otherwise), a check for endpoints with no authentication, a check for request bodies that accept fields like `isAdmin`, YAML support, and publishing to NuGet.
 
 ## Development
 
