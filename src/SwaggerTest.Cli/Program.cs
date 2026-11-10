@@ -21,7 +21,11 @@ scanCommand.SetAction(async (parseResult, cancellationToken) =>
 {
     var spec = parseResult.GetValue(specArgument)!;
     var failOn = parseResult.GetValue(failOnOption);
-    var scanner = new Scanner([new SensitiveFieldRule(), new ResponseNoSchemaRule()]);
+    var scanner = new Scanner([
+    new SensitiveFieldRule(),
+    new ResponseNoSchemaRule(),
+    new NoAuthDeclaredRule()
+]);
     var runner = new ScanRunner(scanner, Console.Out, Console.Error);
     return await runner.RunAsync(spec.FullName, failOn, cancellationToken);
 });

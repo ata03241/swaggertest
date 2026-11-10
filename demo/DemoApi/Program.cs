@@ -47,6 +47,22 @@ app.MapGet("/debug/info", () => Results.Ok(new
 app.MapGet("/directory", () => Results.Ok(users.ToDictionary(u => u.Email)))
    .Produces<Dictionary<string, User>>();
 
+// BUG: anyone can create users, and the request accepts a client-chosen Id.
+app.MapPost("/users", (User user) =>
+    {
+        users.Add(user);
+        return Results.Created($"/users/{user.Id}", user);
+    })
+   .Produces<User>(201);
+
+// BUG: anyone can delete any user.
+app.MapDelete("/users/{id:int}", (int id) =>
+    {
+        users.RemoveAll(u => u.Id == id);
+        return Results.NoContent();
+    })
+   .Produces(204);
+
 app.Run();
 
 record User(int Id, string Email, string Name, string PasswordHash);
